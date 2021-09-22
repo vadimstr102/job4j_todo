@@ -7,6 +7,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.function.Function;
@@ -23,11 +24,15 @@ public class HibernateStore implements AutoCloseable {
         return Lazy.INST;
     }
 
-    public void create(Item item) {
+    public void createItem(Item item) {
         transaction(session -> session.save(item));
     }
 
-    public void update(Item item) {
+    public void createUser(User user) {
+        transaction(session -> session.save(user));
+    }
+
+    public void updateItem(Item item) {
         transaction(session -> {
             var query = session.createQuery(
                     "UPDATE ru.job4j.todo.model.Item SET done = :status WHERE id = :itemId"
@@ -39,10 +44,16 @@ public class HibernateStore implements AutoCloseable {
         });
     }
 
-    public List<Item> findAll() {
+    public List<Item> findAllItems() {
         return transaction(session -> session.createQuery(
                 "FROM ru.job4j.todo.model.Item ORDER BY done, created"
         ).list());
+    }
+
+    public User findUserByEmail(String email) {
+        return (User) transaction(session -> session.createQuery(
+                "FROM User WHERE email = :email"
+        ).setParameter("email", email).uniqueResult());
     }
 
     @Override

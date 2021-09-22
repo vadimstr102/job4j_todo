@@ -10,7 +10,7 @@ $(document).ready(
 function getItems() {
     $.ajax({
         type: 'GET',
-        url: '/job4j_todo/item',
+        url: '/job4j_todo/item.do',
         dataType: 'json',
         success: function (data) {
             let showAll = $('#showAll').is(':checked');
@@ -30,6 +30,7 @@ function getItems() {
                     `<tr>` +
                     `<th scope="row">${count++}</th>` +
                     `<td>${item.description}</td>` +
+                    `<td>${item.user.name}</td>` +
                     `<td>${item.created}</td>` +
                     `<td class="text-center">` +
                     `<input class="form-check-input" type="checkbox" ${checked} onclick="update(${item.id})">` +
@@ -52,7 +53,7 @@ function validateAndCreate() {
     } else {
         $.ajax({
             type: 'POST',
-            url: '/job4j_todo/item',
+            url: '/job4j_todo/item.do',
             data: JSON.stringify({
                 description: description
             }),
@@ -68,7 +69,7 @@ function validateAndCreate() {
 function update(id) {
     $.ajax({
         type: 'POST',
-        url: '/job4j_todo/item',
+        url: '/job4j_todo/item.do',
         data: JSON.stringify({
             id: id
         }),

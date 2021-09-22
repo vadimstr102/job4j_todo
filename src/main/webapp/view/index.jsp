@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,10 +25,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 
-<!-- JavaScript scripts -->
-<script src="service/index.js"></script>
-
 <div class="container">
+    <div class="row justify-content-center pt-3">
+        <div class="col-7 text-end">
+            <c:if test="${user != null}">
+                <p>Привет, <c:out value="${user.name}"/>! | <a href="<%=request.getContextPath()%>/logout.do">Выйти</a></p>
+            </c:if>
+        </div>
+    </div>
     <div class="row justify-content-center pt-3">
         <div class="col text-center">
             <h1>TODO list</h1>
@@ -55,6 +62,7 @@
                         <tr>
                             <th scope="col">№</th>
                             <th scope="col">Задание</th>
+                            <th scope="col">Автор</th>
                             <th scope="col">Дата создания</th>
                             <th scope="col" class="text-center">Статус</th>
                         </tr>
@@ -67,5 +75,8 @@
         </form>
     </div>
 </div>
+
+<!-- JavaScript scripts -->
+<script src="/job4j_todo/service/index.js"></script>
 </body>
 </html>
