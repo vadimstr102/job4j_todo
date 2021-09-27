@@ -6,11 +6,15 @@ CREATE TABLE users
     password VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE items
+CREATE TABLE categories
 (
-    id          SERIAL PRIMARY KEY,
-    description VARCHAR(2000) NOT NULL,
-    created     TIMESTAMP     NOT NULL,
-    done        BOOLEAN       NOT NULL,
-    user_id     INT           NOT NULL REFERENCES users (id)
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
 );
+
+INSERT INTO categories (name)
+VALUES ('Дом'),
+       ('Работа'),
+       ('Учёба'),
+       ('Отдых'),
+       ('Здоровье');
