@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -24,8 +25,15 @@ public class HibernateStore implements AutoCloseable {
         return Lazy.INST;
     }
 
-    public void createItem(Item item) {
-        transaction(session -> session.save(item));
+    public void createItem(Item item, String[] categoriesId) {
+        transaction(session -> {
+            for (String id : categoriesId) {
+                Category category = session.find(Category.class, Integer.parseInt(id));
+                item.addCategory(category);
+            }
+            session.save(item);
+            return true;
+        });
     }
 
     public void createUser(User user) {
@@ -46,14 +54,21 @@ public class HibernateStore implements AutoCloseable {
 
     public List<Item> findAllItems() {
         return transaction(session -> session.createQuery(
-                "FROM ru.job4j.todo.model.Item ORDER BY done, created"
-        ).list());
+                        "SELECT DISTINCT i FROM Item i JOIN FETCH i.categories ORDER BY i.done, i.created"
+                ).list()
+        );
     }
 
     public User findUserByEmail(String email) {
         return (User) transaction(session -> session.createQuery(
                 "FROM User WHERE email = :email"
         ).setParameter("email", email).uniqueResult());
+    }
+
+    public List<Category> findAllCategories() {
+        return transaction(session -> session.createQuery(
+                "FROM Category"
+        ).list());
     }
 
     @Override

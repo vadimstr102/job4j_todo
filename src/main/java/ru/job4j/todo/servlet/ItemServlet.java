@@ -33,16 +33,23 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+        String description = req.getParameter("description");
+        String[] categoriesId = req.getParameterValues("categories");
+        Item item = new Item();
+        item.setUser(user);
+        item.setDescription(description);
+        item.setCreated(new Timestamp(System.currentTimeMillis()));
+        HibernateStore.instOf().createItem(item, categoriesId);
+        resp.sendRedirect(req.getContextPath() + "/index.do");
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
         Item item = GSON.fromJson(req.getReader(), Item.class);
-        if (item.getId() == 0) {
-            HttpSession session = req.getSession();
-            User user = (User) session.getAttribute("user");
-            item.setUser(user);
-            item.setCreated(new Timestamp(System.currentTimeMillis()));
-            HibernateStore.instOf().createItem(item);
-        } else {
-            item.setDone(true);
-            HibernateStore.instOf().updateItem(item);
-        }
+        item.setDone(true);
+        HibernateStore.instOf().updateItem(item);
     }
 }

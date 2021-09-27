@@ -37,17 +37,17 @@
                         <div class="form-group mb-3">
                             <label for="username" class="form-label">Имя</label>
                             <input type="text" class="form-control" id="username" name="name" placeholder="Введите имя пользователя"
-                                   title="Введите имя пользователя!">
+                                   title="Введите имя пользователя">
                         </div>
                         <div class="form-group mb-3">
                             <label for="email" class="form-label">Почта</label>
                             <input type="text" class="form-control" id="email" name="email" placeholder="Введите адрес почты"
-                                   title="Введите адрес почты!">
+                                   title="Введите адрес почты">
                         </div>
                         <div class="form-group mb-4">
                             <label for="password" class="form-label">Пароль</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль"
-                                   title="Введите пароль!">
+                                   title="Введите пароль">
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" onclick="return validate()">Зарегистрироваться</button>
