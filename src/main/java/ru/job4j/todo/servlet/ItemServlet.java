@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class ItemServlet extends HttpServlet {
@@ -40,7 +40,7 @@ public class ItemServlet extends HttpServlet {
         Item item = new Item();
         item.setUser(user);
         item.setDescription(description);
-        item.setCreated(new Timestamp(System.currentTimeMillis()));
+        item.setCreated(new Date(System.currentTimeMillis()));
         HibernateStore.instOf().createItem(item, categoriesId);
         resp.sendRedirect(req.getContextPath() + "/index.do");
     }
